@@ -1,3 +1,22 @@
 <div class="default-style">
-  <dx-button [text]="buttonText" (onClick)="onClick($event)"></dx-button>
+  <dx-html-editor #editor [(value)]="editorValue" [height]="400">
+    <dxo-toolbar [multiline]="true">
+      <dxi-item name="undo"></dxi-item>
+      <dxi-item name="redo"></dxi-item>
+      <dxi-item name="separator"></dxi-item>
+      <dxi-item name="variable"></dxi-item>
+      <dxi-item name="separator"></dxi-item>
+      <dxi-item name="bold"></dxi-item>
+      <dxi-item name="italic"></dxi-item>
+      <dxi-item name="strike"></dxi-item>
+      <dxi-item name="underline"></dxi-item>
+      <dxi-item name="separator"></dxi-item>
+      <dxi-item widget="dxButton"
+        [options]="{ text: 'Convert HtmlEditor variables', onClick: convertVariableOnClick }"></dxi-item>
+    </dxo-toolbar>
+    <dxo-variables [dataSource]="[ 'FirstName', 'LastName' ]" [escapeChar]="[ '{', '}' ]">
+    </dxo-variables>
+  </dx-html-editor>
+  <dx-text-box [(value)]="firstName" label="FirstName - Default: 'John'" labelMode="floating"></dx-text-box>
+  <dx-text-box [(value)]="lastName" label="LastName - Default: 'John'" labelMode="floating"></dx-text-box>
 </div>
