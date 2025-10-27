@@ -1,29 +1,84 @@
 @using ASP_NET_Core.Models
 
-<h2>Home</h2>
-
-@(Html.DevExtreme().DataGrid<SampleOrder>()
-    .ShowBorders(true)
-    .DataSource(d => d.Mvc().Controller("SampleData").LoadAction("Get").Key("OrderID"))
-    .Columns(columns => {
-        columns.AddFor(m => m.OrderID);
-        columns.AddFor(m => m.OrderDate);
-        columns.AddFor(m => m.CustomerName);
-        columns.AddFor(m => m.ShipCountry);
-        columns.AddFor(m => m.ShipCity);
-    })
-    .Paging(p => p.PageSize(10))
-    .FilterRow(f => f.Visible(true))
-    .HeaderFilter(f => f.Visible(true))
-    .GroupPanel(p => p.Visible(true))
-    .Grouping(g => g.AutoExpandAll(false))
-    .RemoteOperations(true)
-    .Summary(s => s
-        .TotalItems(totalItems => {
-            totalItems.AddFor(m => m.ShipCity).SummaryType(SummaryType.Count);
-        })
-        .GroupItems(groupItems => {
-            groupItems.Add().SummaryType(SummaryType.Count);
+@(Html.DevExtreme().HtmlEditor()
+    .ID("editor")
+    .Height(400)
+    .Value(new JS("value"))
+    .Variables(variable => variable
+        .DataSource(new[] { "FirstName", "LastName", })
+        .EscapeChar(new[] { "{", "}" })
+    )
+    .Toolbar(toolbar => toolbar
+        .Multiline(true)
+        .Items(items =>
+        {
+            items.Add().Name(HtmlEditorToolbarItem.Undo);
+            items.Add().Name(HtmlEditorToolbarItem.Redo);
+            items.Add().Name(HtmlEditorToolbarItem.Separator);
+            items.Add().Name(HtmlEditorToolbarItem.Variable);
+            items.Add().Name(HtmlEditorToolbarItem.Separator);
+            items.Add().Name(HtmlEditorToolbarItem.Bold);
+            items.Add().Name(HtmlEditorToolbarItem.Italic);
+            items.Add().Name(HtmlEditorToolbarItem.Strike);
+            items.Add().Name(HtmlEditorToolbarItem.Underline);
+            items.Add().Name(HtmlEditorToolbarItem.Separator);
+            items.Add().Widget(w => w.Button().Text("Convert HtmlEditor variables").OnClick("convertVariableOnClick"));
         })
     )
 )
+
+@(Html.DevExtreme().TextBox()
+    .ID("first")
+    .Label("FirstName - Default: 'John'")
+    .LabelMode(EditorLabelMode.Floating)
+)
+
+@(Html.DevExtreme().TextBox()
+    .ID("last")
+    .Label("LastName - Default: 'Smith'")
+    .LabelMode(EditorLabelMode.Floating)
+)
+
+<script>
+    const value = `<p>This demo illustrates how to parse and convert variables. To get started, input several variables into the editor, type the variable's values in the TextBoxes below, and click the "Convert HtmlEditor variables" button.</p>`;
+    const DX_VARIABLE_CLASS = 'dx-variable';
+    const DATA_VAR_VALUE_ATTR = 'data-var-value';
+
+    /*
+    value: dxHtmlEditor.value
+    variableMap: object = Must contain `key: value` pairs of variable content
+        {
+            'FirstName': 'John',
+            'LastName': 'Smith'
+        }
+    */
+
+    function replaceVariables (value, variablesMap) {
+        const parser = new DOMParser();
+      const doc = parser.parseFromString(value, 'text/html');
+      const variables = doc.querySelectorAll(`.${DX_VARIABLE_CLASS}`);
+
+      variables.forEach(variable => {
+        const variableValue = variablesMap[variable.getAttribute(DATA_VAR_VALUE_ATTR)];
+        variable.outerHTML = variableValue;
+      });
+
+      return doc.body.innerHTML.toString();
+    }
+
+    function convertVariableOnClick(e) {
+        const htmlEditor = $("#editor").dxHtmlEditor("instance");
+        const firstName = $("#first").dxTextBox("instance").option("value") || "John";
+        const lastName = $("#last").dxTextBox("instance").option("value") || "Smith";
+
+        const valueWithReplacedVariables = replaceVariables(
+            htmlEditor.option("value"),
+            {
+                "FirstName": firstName,
+                "LastName": lastName
+            }
+        );
+
+        htmlEditor.option("value", valueWithReplacedVariables);
+    }
+</script>
