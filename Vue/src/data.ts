@@ -1,0 +1,1 @@
+export const markup = '<p>The following demo illustrates how to parse and convert variables. To get started, input several variables, type the variable\'s values in the TextBoxes below, and click the "Convert HtmlEditor variables" button.</p>';
