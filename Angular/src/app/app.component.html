@@ -11,12 +11,27 @@
       <dxi-item name="strike"></dxi-item>
       <dxi-item name="underline"></dxi-item>
       <dxi-item name="separator"></dxi-item>
-      <dxi-item widget="dxButton"
-        [options]="{ text: 'Convert HtmlEditor variables', onClick: convertVariableOnClick }"></dxi-item>
+      <dxi-item
+        widget="dxButton"
+        [options]="{
+          text: 'Convert HtmlEditor variables',
+          onClick: convertVariableOnClick
+        }"
+      ></dxi-item>
     </dxo-toolbar>
-    <dxo-variables [dataSource]="[ 'FirstName', 'LastName' ]" [escapeChar]="[ '{', '}' ]">
-    </dxo-variables>
+    <dxo-variables
+      [dataSource]="['FirstName', 'LastName']"
+      [escapeChar]="['{', '}']"
+    ></dxo-variables>
   </dx-html-editor>
-  <dx-text-box [(value)]="firstName" label="FirstName - Default: 'John'" labelMode="floating"></dx-text-box>
-  <dx-text-box [(value)]="lastName" label="LastName - Default: 'John'" labelMode="floating"></dx-text-box>
+  <dx-text-box
+    [(value)]="firstName"
+    label="FirstName - Default: 'John'"
+    labelMode="floating"
+  ></dx-text-box>
+  <dx-text-box
+    [(value)]="lastName"
+    label="LastName - Default: 'John'"
+    labelMode="floating"
+  ></dx-text-box>
 </div>
