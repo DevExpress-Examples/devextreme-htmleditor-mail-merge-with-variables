@@ -19,11 +19,11 @@ function replaceVariables(value: string, variablesMap: Variable): string {
   const parser: DOMParser = new DOMParser();
 
   const doc: Document = parser.parseFromString(value, 'text/html');
-  const variables: NodeListOf<Element> = doc.querySelectorAll(
+  const variableElements: NodeListOf<Element> = doc.querySelectorAll(
     `.${DX_VARIABLE_CLASS}`,
   );
 
-  variables.forEach((variable: Element): void => {
+  variableElements.forEach((variable: Element): void => {
     const variableValue = variablesMap[variable.getAttribute(DATA_VAR_VALUE_ATTR) ?? ''];
     variable.outerHTML = variableValue;
   });
