@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { DxHtmlEditorModule, DxTextBoxModule } from 'devextreme-angular';
 import { replaceVariables } from './replace-variables';
 
@@ -7,6 +7,7 @@ import { replaceVariables } from './replace-variables';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [DxHtmlEditorModule, DxTextBoxModule],
 })
 export class AppComponent {
